@@ -18,7 +18,7 @@ Generate filled PDF with parameters and values
 
 **Code** : `200 OK`
 
-**Content** : `base64 encoded PDF Filled with parameters and values`
+**Content** : `base64 encoded PDF Filled with form values`
 
 
 # Generate Merged PDF Document
