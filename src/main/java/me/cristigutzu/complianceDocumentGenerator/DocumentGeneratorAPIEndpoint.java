@@ -17,7 +17,6 @@ public class DocumentGeneratorAPIEndpoint {
     @POST
     @Path("/generate/")
     @Consumes("application/json")
-
     @Produces(MediaType.APPLICATION_JSON)
     public Response generate(final DocumentGeneratorInput input) {
         return Response.ok()
