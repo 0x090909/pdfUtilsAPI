@@ -16,10 +16,6 @@ public class DocumentGeneratorAPIEndpoint {
 
     @POST
     @Path("/generate/")
-    @ApiOperation(value = "Finds Pets by status",
-            notes = "Multiple status values can be provided with comma seperated strings",
-            response = String.class,
-            responseContainer = "List")
     @Consumes("application/json")
 
     @Produces(MediaType.APPLICATION_JSON)
