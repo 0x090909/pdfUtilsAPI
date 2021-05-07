@@ -1,8 +1,12 @@
 package me.cristigutzu.complianceDocumentGenerator.business_logic;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.ReaderProperties;
+import com.itextpdf.kernel.utils.PdfMerger;
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-import org.apache.pdfbox.io.MemoryUsageSetting;
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.util.Base64;
@@ -18,35 +22,30 @@ public class MergeDocuments {
 
     public String merge() {
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-            ByteInputStream doc1_in = new ByteInputStream();
-            ByteInputStream doc2_in = new ByteInputStream();
-
-            doc1_in.setBuf(Base64.getDecoder().decode(this.doc1));
-            doc2_in.setBuf(Base64.getDecoder().decode(this.doc2));
 
             File doc1_temp_file = File.createTempFile("doc1_temp", null);
-            File doc2_temp_file = File.createTempFile("doc1_temp", null);
+            File doc2_temp_file = File.createTempFile("doc2_temp", null);
+            File dest_temp_file = File.createTempFile("dest_temp", null);
 
             OutputStream outStream1 = new FileOutputStream(doc1_temp_file);
-            outStream1.write(doc1_in.getBytes());
+            outStream1.write(Base64.getDecoder().decode(this.doc1));
+
 
 
             OutputStream outStream2 = new FileOutputStream(doc2_temp_file);
-            outStream2.write(doc2_in.getBytes());
+            outStream2.write(Base64.getDecoder().decode(this.doc2));
 
 
-            PDFMergerUtility ut = new PDFMergerUtility();
+            PdfDocument document1 = new PdfDocument(new PdfReader(doc1_temp_file), new PdfWriter(dest_temp_file));
+            PdfDocument document2 = new PdfDocument(new PdfReader(doc2_temp_file));
 
-            ut.addSource(doc1_temp_file);
-            ut.addSource(doc2_temp_file);
-            ut.setDestinationStream(byteArrayOutputStream);
+            PdfMerger merger = new PdfMerger(document1);
 
-            ut.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+            merger.merge(document2, 1, document2.getNumberOfPages());
+            merger.close();
 
             String baseMerged =
-                    new String(Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
+                    new String(Base64.getEncoder().encode(FileUtils.readFileToByteArray(dest_temp_file)));
 
             System.out.println(baseMerged);
 

@@ -1,11 +1,6 @@
 package me.cristigutzu.complianceDocumentGenerator.business_logic;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
-import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
-import org.apache.pdfbox.pdmodel.interactive.form.PDField;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +17,7 @@ public class GenerateFilledPDF {
         this.source_document = source_document;
         this.data = data;
         File doc1_temp_file = null;
+/*
         try {
             doc1_temp_file = File.createTempFile("filldoc_temp", null);
             filledDocument = File.createTempFile("filldocfinal_temp", null);
@@ -51,7 +47,7 @@ public class GenerateFilledPDF {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static Map<String, String> generateDataMap(String[] parameters, String[] values) {
@@ -60,7 +56,6 @@ public class GenerateFilledPDF {
         for (int i = 0; i < parameters.length; i++) {
             map.put(parameters[i], values[i]);
         }
-
 
         return map;
     }
